@@ -16,6 +16,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'tier'
+    productFlavors {
+        //Alex
+        realm {
+            dimension 'tier'
+            applicationIdSuffix ".realm"
+            versionNameSuffix "-realm"
+            resValue "string", "app_name", "RealmBenchmark"
+            buildConfigField "float[]", "expectedRead", "{1,2,3,4,5,6,7,8,9,40}"
+            buildConfigField "float[]", "expectedWrite", "{1,2,3,4,5,6,7,8,9,500}"
+            buildConfigField "float[]", "expectedUpdate", "{1,2,3,4,5,6,7,8,9,15}"
+            buildConfigField "float[]", "expectedDelete", "{1,2,3,4,5,6,7,8,9,15}"
+        }
+    }
     lintOptions {
         abortOnError false
     }
