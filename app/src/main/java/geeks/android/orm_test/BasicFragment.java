@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,35 +98,38 @@ public class BasicFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_block, container, false);
         ButterKnife.bind(this, root);
         current = getArguments().getInt(ARG);
-        /*ormTest = new ORMTestImpl(getActivity().getApplicationContext());*/
-        switch (current) {
-            case 0:
-                tv_read.setText(R.string.simple_read);
-                tv_write.setText(R.string.simple_write);
-                tv_update.setText(R.string.simple_update);
-                tv_delete.setText(R.string.simple_delete);
-                break;
-            case 1:
-                tv_read.setText(R.string.complex_read);
-                tv_write.setText(R.string.complex_write);
-                tv_update.setText(R.string.complex_update);
-                tv_delete.setText(R.string.complex_delete);
-                break;
-            case 2:
-                tv_read.setText(R.string.balanced_read);
-                tv_write.setText(R.string.balanced_write);
-                tv_update.setText(R.string.balanced_update);
-                tv_delete.setText(R.string.balanced_delete);
-                break;
+        if (getActivity() != null) {
+            ormTest = new ORMTestImpl(getActivity().getApplicationContext());
+            /*ormTest = new ORMTestImpl(getActivity().getApplicationContext());*/
+            switch (current) {
+                case 0:
+                    tv_read.setText(R.string.simple_read);
+                    tv_write.setText(R.string.simple_write);
+                    tv_update.setText(R.string.simple_update);
+                    tv_delete.setText(R.string.simple_delete);
+                    break;
+                case 1:
+                    tv_read.setText(R.string.complex_read);
+                    tv_write.setText(R.string.complex_write);
+                    tv_update.setText(R.string.complex_update);
+                    tv_delete.setText(R.string.complex_delete);
+                    break;
+                case 2:
+                    tv_read.setText(R.string.balanced_read);
+                    tv_write.setText(R.string.balanced_write);
+                    tv_update.setText(R.string.balanced_update);
+                    tv_delete.setText(R.string.balanced_delete);
+                    break;
+            }
+            if (ormTest.isEmpty()) {
+                mWarningBtn.setVisibility(View.VISIBLE);
+            }
+            show(mChartWrite, BuildConfig.expectedWrite);
+            show(mChartRead, BuildConfig.expectedRead);
+            show(mChartUpdate, BuildConfig.expectedUpdate);
+            show(mChartDelete, BuildConfig.expectedDelete);
         }
-        if (ormTest.isEmpty()) {
-            mWarningBtn.setVisibility(View.VISIBLE);
-        }
-        show(mChartWrite, BuildConfig.expectedWrite);
-        show(mChartRead, BuildConfig.expectedRead);
-        show(mChartUpdate, BuildConfig.expectedUpdate);
-        show(mChartDelete, BuildConfig.expectedDelete);
-        return root;
+            return root;
     }
 
     @OnClick(R.id.warning)
@@ -139,6 +143,7 @@ public class BasicFragment extends Fragment {
 
     @OnClick(R.id.play_full)
     public void play() {
+        Log.e("Test", "Play all clicked");
         if (ormTest.isEmpty()) {
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.alert_title)
@@ -158,6 +163,7 @@ public class BasicFragment extends Fragment {
             }).setIcon(R.drawable.ic_warning).show();
         } else {
             //ormTest.warmingUp();
+            /*playWrite();*/
             playRead();
             playUpdate();
             playDelete();
@@ -166,6 +172,7 @@ public class BasicFragment extends Fragment {
 
     @OnClick(R.id.play_write)
     public void playWrite() {
+        Log.e("Test", "Play write clicked");
         switch (current) {
             case 0:
                 ormTest.writeSimple(0);
@@ -197,6 +204,7 @@ public class BasicFragment extends Fragment {
 
     @OnClick(R.id.play_read)
     public void playRead() {
+        Log.e("Test", "Play read clicked");
         try {
             switch (current) {
                 case 0:
@@ -229,6 +237,7 @@ public class BasicFragment extends Fragment {
 
     @OnClick(R.id.play_update)
     public void playUpdate() {
+        Log.e("Test", "Play update clicked");
         switch (current) {
             case 0:
                 mValues = ormTest.updateSimple();
@@ -257,6 +266,7 @@ public class BasicFragment extends Fragment {
 
     @OnClick(R.id.play_delete)
     public void playDelete() {
+        Log.e("Test", "Play delete clicked");
         switch (current) {
             case 0:
                 mValues = ormTest.deleteSimple();

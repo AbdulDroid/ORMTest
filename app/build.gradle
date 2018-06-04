@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+/*
+apply plugin: 'realm-android'*/
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -19,7 +22,7 @@ android {
     flavorDimensions 'tier'
     productFlavors {
         //Alex
-        realm {
+        /*realm {
             dimension 'tier'
             applicationIdSuffix ".realm"
             versionNameSuffix "-realm"
@@ -28,6 +31,22 @@ android {
             buildConfigField "float[]", "expectedWrite", "{1,2,3,4,5,6,7,8,9,500}"
             buildConfigField "float[]", "expectedUpdate", "{1,2,3,4,5,6,7,8,9,15}"
             buildConfigField "float[]", "expectedDelete", "{1,2,3,4,5,6,7,8,9,15}"
+        }*/
+
+        room {
+            dimension 'tier'
+            applicationIdSuffix ".room"
+            versionNameSuffix "-room"
+            resValue "string", "app_name", "RoomBenchmark"
+            buildConfigField "float[]", "expectedRead", "{1,2,3,4,5,6,7,8,9,1000}"
+            buildConfigField "float[]", "expectedWrite", "{1,2,3,4,5,6,7,8,9,1000}"
+            buildConfigField "float[]", "expectedUpdate", "{1,2,3,4,5,6,7,8,9,1000}"
+            buildConfigField "float[]", "expectedDelete", "{1,2,3,4,5,6,7,8,9,1000}"
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                }
+            }
         }
     }
     lintOptions {
@@ -47,6 +66,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.diogobernardino:williamchart:2.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    roomImplementation 'android.arch.persistence.room:runtime:1.1.1-rc1'
+    roomAnnotationProcessor 'android.arch.persistence.room:compiler:1.1.1-rc1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
